@@ -1,0 +1,151 @@
+<?php
+/** @var \Aize\Rma\Block\Adminhtml\RmaRequest\View $block */
+$rmaRequest = $block->getRmaRequest();
+$rmaItems = $block->getRelatedRmaItems();
+?>
+
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 10000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    .action-buttons {
+        display: inline-flex;
+        gap: 10px;
+    }
+</style>
+
+<div class="rma-request-detail">
+    <a href="<?php echo $block->getBackUrl(); ?>" class="action back" style="font-weight: bold; color: #000;"><span>&larr;</span> Back</a>
+    <table class="data table admin__table-secondary" id="rma-items-table">
+        <thead>
+        <tr>
+            <th><?php echo __('Product') ?></th>
+            <th><?php echo __('RMA ID') ?></th>
+            <th><?php echo __('Order ID') ?></th>
+            <th><?php echo __('Ordered') ?></th>
+            <th><?php echo __('Quantity') ?></th>
+            <th><?php echo __('Return Reason') ?></th>
+            <th><?php echo __('RMA Status') ?></th>
+            <th><?php echo __('Actions') ?></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <?php foreach ($rmaItems as $rmaItem): ?>
+            <tr>
+                <td><?php echo $block->getOrderItemName($rmaItem->getOrderItemId()) ?></td>
+                <td class="rmaId"><?php echo $rmaItem->getRmaId() ?></td>
+                <?php $order = $block->getOrder($rmaItem->getOrderId()); ?>
+                <td><a href="<?php echo $block->getOrderUrl($rmaItem->getOrderId()) ?>"><?php echo $order->getIncrementId() ?></a></td>
+                <td><?php echo $block->getOrderDate($rmaItem->getOrderId()) ?></td>
+                <td><?php echo $rmaItem->getQuantityRequested() ?></td>
+                <td>
+                    <?php
+                    $reason = $rmaItem->getReason();
+                    $shortReason = substr($reason, 0, 10);
+                    ?>
+                    <span><?php echo $shortReason; ?></span>
+                    <a href="#" class="reason-modal-link" data-toggle="modal" data-target="#reasonModal-<?php echo $rmaItem->getRmaId(); ?>">...</a>
+                    <div class="modal" id="reasonModal-<?php echo $rmaItem->getRmaId(); ?>" style="z-index: 10000; position: fixed; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.4);">
+                        <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
+                            <h5>Return Reason</h5>
+                            <p><?php echo $reason; ?></p>
+                            <button type="button" class="close" style="color: #aaaaaa; font-size: 14px; font-weight: bold; position: absolute; float: right">&times;</button>
+                        </div>
+                    </div>
+                </td>
+                <td><?php echo $rmaItem->getRmaStatus() ?></td>
+                <td>
+                    <div class="action-buttons">
+                        <form method="post" action="<?php echo $block->getUrl('aize_rma/rmarequest/approve'); ?>" style="display: inline;">
+                            <input type="hidden" name="rma_id" value="<?php echo $rmaItem->getRmaId(); ?>">
+                            <input type="hidden" name="rma_item_id" value="<?php echo $rmaItem->getRmaItemId(); ?>">
+                            <button type="submit" class="action-default scalable action-primary" onclick="return confirmSubmit('<?php echo __('Are you sure you want to Approve?'); ?>');"><?php echo __('Approve') ?></button>
+                        </form>
+
+                        <form method="post" action="<?php echo $block->getUrl('aize_rma/rmarequest/deny'); ?>" style="display: inline;">
+                            <input type="hidden" name="rma_id" value="<?php echo $rmaItem->getRmaId(); ?>">
+                            <input type="hidden" name="rma_item_id" value="<?php echo $rmaItem->getRmaItemId(); ?>">
+                            <button type="submit" class="action-default scalable action-secondary" onclick="return confirmSubmit('<?php echo __('Are you sure you want to Deny?'); ?>');"><?php echo __('Deny') ?></button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    require(['jquery'], function ($) {
+        $(document).ready(function () {
+            $('.reason-modal-link').on('click', function (event) {
+                event.preventDefault();
+                var target = $(this).data('target');
+                $(target).css('display', 'block');
+            });
+
+            $('.close').on('click', function () {
+                $(this).closest('.modal').css('display', 'none');
+            });
+        });
+    });
+
+    function confirmSubmit(message) {
+        if (confirm(message)) {
+            alert('Form submitted');
+            return true;
+        }
+        return false;
+    }
+</script>
+<script>
+    require(['jquery'], function ($) {
+        $(document).ready(function () {
+            $('form[action*="aize_rma/rmarequest/approve"]').on('submit', function (event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: this.action,
+                    type: this.method,
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        console.log('Form submitted successfully:', response);
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error during form submission:', textStatus, errorThrown);
+                    }
+                });
+            });
+
+            $('form[action*="aize_rma/rmarequest/deny"]').on('submit', function (event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: this.action,
+                    type: this.method,
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        console.log('Form submitted successfully:', response);
+                         location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error during form submission:', textStatus, errorThrown);
+                        console.error('HTTP status:', jqXHR.status);
+                        console.error('Error response text:', jqXHR.responseText);
+                    }
+
+                });
+            });
+        });
+    });
+</script>

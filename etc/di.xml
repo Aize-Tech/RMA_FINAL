@@ -1,4 +1,44 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Aize\Rma\Block\RmaForm">
+        <arguments>
+            <argument name="viewModel" xsi:type="object">Aize\Rma\ViewModel\RmaRequestData</argument>
+        </arguments>
+    </type>
+    <type name="Aize\Rma\Controller\Index\Submit">
+        <arguments>
+            <argument name="context" xsi:type="object">Magento\Framework\App\Action\Context</argument>
+            <argument name="orderFactory" xsi:type="object">Magento\Sales\Model\OrderFactory</argument>
+            <argument name="rmaRequestFactory" xsi:type="object">Aize\Rma\Model\RmaRequestFactory</argument>
+            <argument name="rmaRequestResource" xsi:type="object">Aize\Rma\Model\ResourceModel\RmaRequest</argument>
+            <argument name="logger" xsi:type="object">Psr\Log\LoggerInterface</argument>
+        </arguments>
+    </type>
+    <virtualType name="AizeRmaRmaRequestGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">rma_request</argument>
+            <argument name="resourceModel" xsi:type="string">Aize\Rma\Model\ResourceModel\RmaRequest</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="aize_rma_rmarequest_listing_data_source" xsi:type="string">AizeRmaRmaRequestGridDataProvider</item>
+                <item name="aize_rma_rmarequest_items_listing_data_source" xsi:type="string">AizeRmaRmaItemGridDataProvider</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Aize\Rma\Model\ResourceModel\RmaItem\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">rma_item</argument>
+            <argument name="resourceModel" xsi:type="string">Aize\Rma\Model\ResourceModel\RmaItem</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="aize_rma_rmaitem_listing_data_source" xsi:type="string">Aize\Rma\Model\ResourceModel\RmaItem\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

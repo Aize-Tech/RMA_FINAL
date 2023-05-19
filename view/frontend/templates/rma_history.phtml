@@ -1,0 +1,27 @@
+<?php
+/** @var \Aize\Rma\Block\RmaHistory $block */
+$rmaRequests = $block->getCustomerRmaRequests();
+?>
+<div class="rma-history">
+    <p>Back to <a href="<?= $block->escapeUrl($block->getUrl('sales/order/history')) ?>"><?= $block->escapeHtml(__('My Orders')) ?> </a>to Create Another Return Request</p>
+    <?php if (is_object($rmaRequests) && $rmaRequests->getSize()): ?>
+        <table class="data table table-rma-history">
+            <thead>
+            <tr>
+                <th><?= $block->escapeHtml(__('RMA ID')) ?></th>
+                <th><?= $block->escapeHtml(__('Status')) ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($rmaRequests as $request): ?>
+                <tr>
+                    <td><?= $block->escapeHtml($request->getId()) ?></td>
+                    <td><?= $block->escapeHtml($request->getAuthorized())?> </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p><?= $block->escapeHtml(__('You have no Return.')) ?></p>
+    <?php endif; ?>
+</div>

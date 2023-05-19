@@ -1,0 +1,7 @@
+<!-- app/code/Aize/Rma/etc/email_templates.xml -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="rma_email_confirmation_template" label="RMA Request Confirmation" file="confirmation_template.html" type="html" module="Aize_Rma" area="frontend" />
+    <template id="rma_email_approval_template" label="RMA Approval Email Template" file="approval_template.html" type="html" module="Aize_Rma" area="adminhtml" />
+    <template id="rma_email_denial_template" label="RMA Denial Email Template" file="denial_template.html" type="html" module="Aize_Rma" area="adminhtml"/>
+</config>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Aize\Rma\Block\RmaForm" name="aize_rma_form" template="Aize_Rma::rma_form.phtml">
+                <arguments>
+                    <argument name="viewModel" xsi:type="object">Aize\Rma\ViewModel\RmaRequestData</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

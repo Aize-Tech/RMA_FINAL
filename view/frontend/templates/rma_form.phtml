@@ -1,0 +1,80 @@
+<?php /** @var \Aize\Rma\ViewModel\RmaRequestData $viewModel */ ?>
+<?php $viewModel = $block->getData('viewModel'); ?>
+
+<style>
+    .rma-item-container {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    .rma-item-container .field {
+        margin-bottom: 1rem;
+    }
+    .rma-item-container select.input-text {
+        width: auto;
+    }
+    .reason-field {
+        display: none;
+    }
+</style>
+
+<script>
+    function toggleReasonField(itemId) {
+        var checkbox = document.getElementById('item-' + itemId);
+        var reasonField = document.getElementById('reason-field-' + itemId);
+        if (checkbox.checked) {
+            reasonField.style.display = 'block';
+        } else {
+            reasonField.style.display = 'none';
+        }
+    }
+</script>
+
+<form action="<?= $block->getUrl('rma/index/submit') ?>" method="post" id="rma-request-form" data-mage-init='{"validation":{}}'>
+    <?php if ($viewModel->getOrder() !== null): ?>
+    <input type="hidden" name="order_id" value="<?= $block->escapeHtmlAttr($viewModel->getOrder()->getEntityId()) ?>">
+    <?php foreach ($viewModel->getOrderItems() as $item): ?>
+    <div class="rma-item-container">
+        <div class="field required">
+            <input type="checkbox" name="order_item_ids[]" id="item-<?= $block->escapeHtmlAttr($item->getItemId()) ?>"
+                   value="<?= $block->escapeHtmlAttr($item->getItemId()) ?>"
+                   data-validate="{required:true}" onclick="toggleReasonField(<?= $block->escapeHtmlAttr($item->getItemId()) ?>)">
+            <label for="item-<?= $block->escapeHtmlAttr($item->getItemId()) ?>" class="label">
+                <span><?= $block->escapeHtml($item->getName()) ?></span>
+            </label>
+        </div>
+        <div class="control">
+            <label for="quantity-<?= $block->escapeHtmlAttr($item->getItemId()) ?>" class="label">
+                <span><?= $block->escapeHtml(__('Quantity')) ?></span>
+            </label>
+            <select name="quantities[<?= $block->escapeHtmlAttr($item->getItemId()) ?>]"
+                    id="quantity-<?= $block->escapeHtmlAttr($item->getItemId()) ?>"
+                    class="input-text" data-validate="{required:true}">
+                <?php for ($i = 1; $i <= $item->getQtyOrdered(); $i++): ?>
+                    <option value="<?= $i ?>"><?= $i ?></option>
+                <?php endfor; ?>
+            </select>
+        </div>
+        <div class="field required reason-field" id="reason-field-<?= $block->escapeHtmlAttr($item->getItemId()) ?>">
+            <label for="reason-<?= $block->escapeHtmlAttr($item->getItemId()) ?>" class="label">
+                <span><?= $block->escapeHtml(__('Return Reason')) ?></span>
+            </label>
+            <div class="control">
+                <input type="text" name="reasons[<?= $block->escapeHtmlAttr($item->getItemId()) ?>]" id="reason-<?= $block->escapeHtmlAttr($item->getItemId()) ?>" class="input-text" data-validate="{required:true}" />
+            </div>
+        </div>
+    </div>
+        <?php endforeach; ?>
+
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button type="submit" class="action submit primary" title="<?= $block->escapeHtmlAttr(__('Submit Return')) ?>">
+                    <span><?= $block->escapeHtml(__('Submit Return')) ?></span>
+                </button>
+            </div>
+        </div>
+    <?php else: ?>
+        <p><?= $block->escapeHtml(__('Order not found. Please make sure the order_id parameter is correct.')) ?></p>
+    <?php endif; ?>
+</form>
+

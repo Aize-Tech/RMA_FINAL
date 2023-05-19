@@ -1,12 +1,11 @@
 <?php
+namespace Aize\Rma\Controller\Adminhtml\RmaRequest;
 
-namespace Aize\Rma\Controller\Index;
-
-use Magento\Framework\App\Action\Action;
-use Magento\Framework\App\Action\Context;
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 
-class Index extends Action
+class View extends Action
 {
     protected $resultPageFactory;
 
@@ -21,6 +20,13 @@ class Index extends Action
     public function execute()
     {
         $resultPage = $this->resultPageFactory->create();
+        $resultPage->getConfig()->getTitle()->prepend(__('RMA Request Details'));
+
         return $resultPage;
+    }
+
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('Aize_Rma::rmarequest');
     }
 }

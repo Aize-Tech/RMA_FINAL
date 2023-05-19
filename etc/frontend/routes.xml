@@ -5,5 +5,9 @@
         <route id="rma" frontName="rma">
             <module name="Aize_Rma" />
         </route>
+        <route id="rma_request" frontName="rma_request">
+            <module name="Aize_Rma" />
+        </route>
     </router>
 </config>
+

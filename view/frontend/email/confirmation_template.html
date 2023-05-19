@@ -1,0 +1,26 @@
+<!--@subject {{trans "RMA Request Confirmation"}} @-->
+<!--@vars {
+"var order.increment_id":"Order ID",
+"var rma_request_id":"RMA Request ID"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<p>{{trans "Dear Customer,"}}</p>
+
+<p>{{trans "Your RMA request has been submitted successfully. Please find the details below:"}}</p>
+
+<table>
+    <tr>
+        <td>{{trans "Order ID:"}}</td>
+        <td>{{var order.increment_id}}</td>
+    </tr>
+    <tr>
+        <td>{{trans "RMA Request ID:"}}</td>
+        <td>{{var rma_request_id}}</td>
+    </tr>
+</table>
+
+<p>{{trans "You will receive an email once the RMA request is approved or denied. Thank you for your patience."}}</p>
+
+{{template config_path="design/email/footer_template"}}

@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="mageplaza" translate="label" sortOrder="10">
+        <tab id="rma" translate="label" sortOrder="10">
             <label>RMA System</label>
         </tab>
-        <section id="helloworld" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="rma" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
             <label>Manage All RMA</label>
-            <tab>mageplaza</tab>
-            <resource>Mageplaza_HelloWorld::helloworld_config</resource>
+            <tab>rma</tab>
+            <resource>Aize_Rma::rma_config</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
-                <label>General Configuration</label>
+                <label>RMA Configuration</label>
                 <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Module Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -18,6 +18,29 @@
                 <field id="display_text" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Display Text</label>
                     <comment>This text will display on the frontend.</comment>
+                </field>
+                <field id="order_statuses" translate="label" type="multiselect" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allowed Order Statuses</label>
+                    <source_model>Aize\Rma\Model\Config\Source\OrderStatus</source_model>
+                    <comment>Select order statuses that are allowed to make RMA requests.</comment>
+                </field>
+            </group>
+            <group id="email" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Email Templates</label>
+                <field id="confirmation_template" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Confirmation Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <comment>Select the email template for RMA request confirmation.</comment>
+                </field>
+                <field id="approval_template" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Approval Template</label>
+                    <source_model>Aize\Rma\Model\Config\Source\Email\Template</source_model>
+                    <comment>Select the email template for RMA item approval.</comment>
+                </field>
+                <field id="denial_template" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Denial Template</label>
+                    <source_model>Aize\Rma\Model\Config\Source\Email\Template</source_model>
+                    <comment>Select the email template for RMA item denial.</comment>
                 </field>
             </group>
         </section>
