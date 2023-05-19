@@ -14,4 +14,31 @@
             <argument name="logger" xsi:type="object">Psr\Log\LoggerInterface</argument>
         </arguments>
     </type>
+    <virtualType name="AizeRmaRmaRequestGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">rma_request</argument>
+            <argument name="resourceModel" xsi:type="string">Aize\Rma\Model\ResourceModel\RmaRequest</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="aize_rma_rmarequest_listing_data_source" xsi:type="string">AizeRmaRmaRequestGridDataProvider</item>
+                <item name="aize_rma_rmarequest_items_listing_data_source" xsi:type="string">AizeRmaRmaItemGridDataProvider</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Aize\Rma\Model\ResourceModel\RmaItem\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">rma_item</argument>
+            <argument name="resourceModel" xsi:type="string">Aize\Rma\Model\ResourceModel\RmaItem</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="aize_rma_rmaitem_listing_data_source" xsi:type="string">Aize\Rma\Model\ResourceModel\RmaItem\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

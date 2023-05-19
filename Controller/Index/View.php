@@ -20,7 +20,7 @@ class View extends Action
     public function execute()
     {
         $resultPage = $this->resultPageFactory->create();
-        $resultPage->getConfig()->getTitle()->set(__('RMA History'));
+        $resultPage->getConfig()->getTitle()->set(__('Return History'));
         return $resultPage;
     }
 }

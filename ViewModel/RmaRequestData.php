@@ -31,8 +31,32 @@ class RmaRequestData implements ArgumentInterface
         $order = $this->getOrder();
         $items = [];
         foreach ($order->getAllItems() as $item) {
-                $items[] = $item;
+            $items[] = $item;
         }
         return $items;
     }
+
+    public function getOrderItemsData()
+    {
+        $itemsData = [];
+        foreach ($this->getOrderItems() as $item) {
+            $itemsData[] = [
+                'item_id' => $item->getItemId(),
+                'qty_ordered' => (int)$item->getQtyOrdered(),
+            ];
+        }
+        return $itemsData;
+    }
+
+    public function getOrderIncrementId($orderId)
+    {
+        $order = $this->orderFactory->create()->load($orderId);
+        if ($order && $order->getId()) {
+            return $order->getIncrementId();
+        }
+        return null;
+    }
+
+
+
 }

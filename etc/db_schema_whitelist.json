@@ -2,16 +2,30 @@
     "rma_request": {
         "column": {
             "entity_id": true,
+            "authorized": true,
+            "requested": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "rma_item": {
+        "column": {
+            "rma_item_id": true,
+            "rma_id": true,
             "order_id": true,
-            "reason": true,
-            "created_at": true,
-            "updated_at": true,
             "order_item_id": true,
-            "quantity": true
+            "order_item_name": true,
+            "rma_status": true,
+            "quantity_requested": true,
+            "quantity_approved": true,
+            "quantity_denied": true,
+            "reason": true
         },
         "constraint": {
             "PRIMARY": true,
-            "RMA_REQUEST_ORDER_ID_SALES_ORDER_ENTITY_ID": true
+            "RMA_ITEM_RMA_ID_RMA_REQUEST_ENTITY_ID": true,
+            "RMA_ITEM_ORDER_ID_SALES_ORDER_ENTITY_ID": true
         }
     }
 }

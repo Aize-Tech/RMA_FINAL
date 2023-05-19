@@ -2,13 +2,28 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="rma_request" resource="default" engine="innodb" comment="RMA Request Table">
         <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
-        <column xsi:type="int" name="order_id" padding="10" unsigned="true" nullable="false" comment="Order ID"/>
-        <column xsi:type="int" name="order_item_id" padding="10" unsigned="true" nullable="false" comment="Order Item ID"/>
-        <column xsi:type="decimal" name="quantity" precision="12" scale="4" unsigned="false" nullable="false" comment="Quantity"/>
-        <column xsi:type="text" name="reason" nullable="false" comment="Reason"/>
+        <column xsi:type="varchar" name="authorized" nullable="false" length="255" default="Pending" comment="Authorized"/>
+        <column xsi:type="timestamp" name="requested" nullable="false" default="CURRENT_TIMESTAMP" comment="Requested Date"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
         </constraint>
-        <constraint xsi:type="foreign" referenceId="RMA_REQUEST_ORDER_ID_SALES_ORDER_ENTITY_ID" table="rma_request" column="order_id" referenceTable="sales_order" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+
+    <table name="rma_item" resource="default" engine="innodb" comment="RMA Item Table">
+        <column xsi:type="int" name="rma_item_id" padding="10" unsigned="true" nullable="false" identity="true" comment="RMA Item ID"/>
+        <column xsi:type="int" name="rma_id" padding="10" unsigned="true" nullable="false" comment="RMA ID"/>
+        <column xsi:type="int" name="order_id" padding="10" unsigned="true" nullable="false" comment="Order ID"/>
+        <column xsi:type="int" name="order_item_id" padding="10" unsigned="true" nullable="false" comment="Order Item ID"/>
+        <column xsi:type="text" name="order_item_name" nullable="false" comment="Order Item Name"/>
+        <column xsi:type="varchar" name="rma_status" nullable="false" length="255" default="Pending"  comment="RMA Status"/>
+        <column xsi:type="decimal" name="quantity_requested" precision="12" scale="4" unsigned="false" nullable="false" comment="Quantity Requested"/>
+        <column xsi:type="decimal" name="quantity_approved" precision="12" scale="4" unsigned="false" nullable="false" comment="Quantity Approved"/>
+        <column xsi:type="decimal" name="quantity_denied" precision="12" scale="4" unsigned="false" nullable="false" comment="Quantity Denied"/>
+        <column xsi:type="text" name="reason" nullable="false" comment="Reason"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="rma_item_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="RMA_ITEM_RMA_ID_RMA_REQUEST_ENTITY_ID" table="rma_item" column="rma_id" referenceTable="rma_request" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="RMA_ITEM_ORDER_ID_SALES_ORDER_ENTITY_ID" table="rma_item" column="order_id" referenceTable="sales_order" referenceColumn="entity_id" onDelete="CASCADE"/>
     </table>
 </schema>

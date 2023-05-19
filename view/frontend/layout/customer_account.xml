@@ -3,10 +3,10 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="customer_account_navigation">
-            <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-last-ordered-products-link">
+            <block class="Magento\Customer\Block\Account\SortLinkInterface" ifconfig="rma/general/enable" name="customer-account-navigation-last-ordered-products-link">
                 <arguments>
                     <argument name="path" xsi:type="string">rma/index/view</argument>
-                    <argument name="label" xsi:type="string">RMA History</argument>
+                    <argument name="label" xsi:type="string">Returns</argument>
                     <argument name="sortOrder" xsi:type="number">220</argument>
                 </arguments>
             </block>

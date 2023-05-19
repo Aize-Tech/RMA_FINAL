@@ -4,7 +4,7 @@ $order = $block->getOrder();
 $rmaUrl = $block->getUrl('rma/index/index', ['order_id' => $order->getId()]);
 ?>
 <?php if ($block->isRmaAvailable()): ?>
-    <a class="order-link" href="<?= $block->escapeUrl($rmaUrl) ?>">
-        <span><?= $block->escapeHtml(__('RMA Request')) ?></span>
-    </a>
+<a class="order-link" href="<?= $block->escapeUrl($rmaUrl) ?>">
+    <span><?= $block->escapeHtml(__('Make a Return Request')) ?></span>
+</a>
 <?php endif; ?>
